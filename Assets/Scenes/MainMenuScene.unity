@@ -2712,6 +2712,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: 802a9159de40cfa419c67fae3688d986, type: 2}
+  effectsSlider: {fileID: 590032716}
+  musicSlider: {fileID: 1357858184}
+  fullscreenToggle: {fileID: 97210105}
 --- !u!1 &1544743588
 GameObject:
   m_ObjectHideFlags: 0
