@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class SettingsMenu : MonoBehaviour
 {
     public AudioMixer mixer;
+    public Slider effectsSlider;
+    public Slider musicSlider;
+    public Toggle fullscreenToggle;
+
     private float effectsVolume;
     private float musicVolume;
     private bool isFullscreen;
 
     private void Start()
     {
-        effectsVolume = PlayerPrefs.GetFloat("effects");
-        musicVolume = PlayerPrefs.GetFloat("music");
-        isFullscreen = PlayerPrefs.GetInt("fullscreen") == 1;
+        LoadSettings();
     }
 
     public void ChangeEffectVolume(float volume)
@@ -36,6 +39,17 @@ public class SettingsMenu : MonoBehaviour
         Debug.Log("Changing fullscreen mode to: " + isOn);
         isFullscreen = isOn;
         Screen.fullScreenMode = isOn ? FullScreenMode.ExclusiveFullScreen : FullScreenMode.Windowed;
+    }
+
+    public void LoadSettings()
+    {
+        effectsVolume = PlayerPrefs.GetFloat("effects");
+        musicVolume = PlayerPrefs.GetFloat("music");
+        isFullscreen = PlayerPrefs.GetInt("fullscreen") == 1;
+
+        effectsSlider.value = effectsVolume;
+        musicSlider.value = musicVolume;
+        fullscreenToggle.isOn = isFullscreen;
     }
 
     public void SaveChanges()
