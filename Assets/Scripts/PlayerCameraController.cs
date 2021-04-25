@@ -33,7 +33,7 @@ public class PlayerCameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!player.GetComponent<PlayerController>().isPaused)
+        if(!player.GetComponent<PlayerController>().isPaused && !player.GetComponent<PlayerController>().isDead)
         {
             var mouseX = Input.GetAxisRaw("Mouse X");
             var mouseY = Input.GetAxisRaw("Mouse Y");
@@ -96,8 +96,13 @@ public class PlayerCameraController : MonoBehaviour
 
                 }
             }
-        }
+        } else
+        {
+            GameObject faceLocation = GameObject.FindGameObjectWithTag("Enemy");
 
+
+            transform.LookAt(faceLocation.transform);
+        }
     }
 
     private void SetActiveItem(GameObject item)

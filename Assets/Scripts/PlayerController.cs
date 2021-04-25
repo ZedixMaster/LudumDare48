@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     private float vertical;
     private float horizontal;
 
-    private bool isDead = false;
+    public bool isDead = false;
 
     private List<GameObject> inventory;
     public bool isPaused = false;
