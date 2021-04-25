@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,7 +14,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float turnSpeed = 7f;
     [SerializeField] private float maxTurnSpeed = 1.5f;
     [SerializeField] private float transitionSpeed = 1f;
-
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject crosshair;
+    [SerializeField] private GameObject settingsMenu;
     [SerializeField] private GameObject[] inventoryObjects;
 
     private Vector3 velocity;
@@ -24,9 +27,13 @@ public class PlayerController : MonoBehaviour
     private bool isDead = false;
 
     private List<GameObject> inventory;
+    public bool isPaused = false;
     
     void Start()
     {
+        pauseMenu.SetActive(false);
+        settingsMenu.SetActive(false);
+        crosshair.SetActive(true);
         rb = GetComponent<Rigidbody>();
     }
     
@@ -35,6 +42,16 @@ public class PlayerController : MonoBehaviour
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
 
+        if (Input.GetKeyDown(KeyCode.G))
+        { 
+            if(!isPaused)
+            {
+                PauseGame();
+            } else
+            {
+                ResumeGame();
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -108,5 +125,29 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         isDead = true;
+    }
+    
+    public void PauseGame()
+    {
+        crosshair.SetActive(false);
+        pauseMenu.SetActive(true);
+        isPaused = true;
+        //Time.timeScale = 0.1f;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void ResumeGame()
+    {
+        crosshair.SetActive(true);
+        pauseMenu.SetActive(false);
+        settingsMenu.SetActive(false);
+        isPaused = false;
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("MainMenuScene");
     }
 }

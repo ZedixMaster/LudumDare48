@@ -12,6 +12,8 @@ public class PlayerCameraController : MonoBehaviour
     private List<GameObject> highlightableItems;
     private GameObject activeItem;
 
+    public GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,65 +33,68 @@ public class PlayerCameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var mouseX = Input.GetAxisRaw("Mouse X");
-        var mouseY = Input.GetAxisRaw("Mouse Y");
-
-        rotation.x += -mouseY * sensX;
-        rotation.y += mouseX * sensY;
-
-        rotation.x = Mathf.Clamp(rotation.x, -90f, 90f);
-        rotation.y = Mathf.Clamp(rotation.y, -90f, 90f);
-        transform.localRotation = Quaternion.Euler(rotation);
-
-
-
-        RaycastHit hit;
-        foreach (var item in highlightableItems)
+        if(!player.GetComponent<PlayerController>().isPaused)
         {
-            item.GetComponent<Highlight>().DisableOutline();
-        }
-        GameObject highlightedItem = null;
+            var mouseX = Input.GetAxisRaw("Mouse X");
+            var mouseY = Input.GetAxisRaw("Mouse Y");
+
+            rotation.x += -mouseY * sensX;
+            rotation.y += mouseX * sensY;
+
+            rotation.x = Mathf.Clamp(rotation.x, -90f, 90f);
+            rotation.y = Mathf.Clamp(rotation.y, -90f, 90f);
+            transform.localRotation = Quaternion.Euler(rotation);
 
 
 
-        int layermask = 1 << 6;
-        if(Physics.Raycast(transform.position, transform.forward, out hit, 500, layermask))
-        {
-            GameObject hitObject = hit.collider.transform.gameObject;
-            if(hitObject.GetComponent<Highlight>() != null)
+            RaycastHit hit;
+            foreach (var item in highlightableItems)
             {
-                highlightedItem = hitObject;
-                highlightedItem.GetComponent<Highlight>().EnableOutline();
+                item.GetComponent<Highlight>().DisableOutline();
             }
-        }
+            GameObject highlightedItem = null;
 
 
 
-        if(Input.GetMouseButtonDown(0))
-        {
-            if(activeItem != null)
+            int layermask = 1 << 6;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 500, layermask))
             {
-                if (highlightedItem != null && highlightedItem.GetComponent<Obstacle>() != null && activeItem == highlightedItem.GetComponent<Obstacle>().pairedObject)
+                GameObject hitObject = hit.collider.transform.gameObject;
+                if (hitObject.GetComponent<Highlight>() != null)
                 {
-                    highlightedItem.GetComponent<Obstacle>().Unlock();
-                    highlightableItems.Remove(highlightedItem);
+                    highlightedItem = hitObject;
+                    highlightedItem.GetComponent<Highlight>().EnableOutline();
                 }
-                activeItem.GetComponent<Highlight>().SetIsActive(false);
-                activeItem.GetComponent<Highlight>().DisableOutline();
-                activeItem = null;
             }
-            if(highlightedItem != null)
+
+
+
+            if (Input.GetMouseButtonDown(0))
             {
-                
-                if (highlightedItem.GetComponent<Lilypad>() != null)
+                if (activeItem != null)
                 {
-                    AddItemToInventory(highlightedItem.GetComponent<Lilypad>());
+                    if (highlightedItem != null && highlightedItem.GetComponent<Obstacle>() != null && activeItem == highlightedItem.GetComponent<Obstacle>().pairedObject)
+                    {
+                        highlightedItem.GetComponent<Obstacle>().Unlock();
+                        highlightableItems.Remove(highlightedItem);
+                    }
+                    activeItem.GetComponent<Highlight>().SetIsActive(false);
+                    activeItem.GetComponent<Highlight>().DisableOutline();
+                    activeItem = null;
                 }
-                if (highlightedItem.GetComponent<InventoryItem>() != null)
+                if (highlightedItem != null)
                 {
-                    SetActiveItem(highlightedItem);
+
+                    if (highlightedItem.GetComponent<Lilypad>() != null)
+                    {
+                        AddItemToInventory(highlightedItem.GetComponent<Lilypad>());
+                    }
+                    if (highlightedItem.GetComponent<InventoryItem>() != null)
+                    {
+                        SetActiveItem(highlightedItem);
+                    }
+
                 }
-                
             }
         }
 
