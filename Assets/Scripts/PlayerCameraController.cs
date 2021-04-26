@@ -11,11 +11,14 @@ public class PlayerCameraController : MonoBehaviour
 
     private List<GameObject> highlightableItems;
     private GameObject activeItem;
+    private GameObject[] enemies;
 
     public GameObject player;
     public GameObject credits;
 
     public SettingsMenu settings;
+
+    public bool beingChased = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +36,9 @@ public class PlayerCameraController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         rotation = new Vector3(0, 0, 0);
+
+
+        enemies = GameObject.FindGameObjectsWithTag("EnemyParents");
     }
 
     // Update is called once per frame
@@ -107,10 +113,42 @@ public class PlayerCameraController : MonoBehaviour
             }
         } else if(player.GetComponent<PlayerController>().isDead)
         {
-            GameObject faceLocation = GameObject.FindGameObjectWithTag("Enemy");
+            Transform tMin = null;
+            float minDist = Mathf.Infinity;
+            GameObject[] faceLocations = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach(GameObject face in faceLocations)
+            {
+                float dist = Vector3.Distance(face.transform.position, transform.position);
+                if(dist < minDist)
+                {
+                    tMin = face.transform;
+                    minDist = dist;
+                }
+            }
 
 
-            transform.LookAt(faceLocation.transform);
+            transform.LookAt(tMin);
+        }
+
+        beingChased = false;
+        foreach(GameObject enemy in enemies)
+        {
+            if(enemy.gameObject.GetComponent<EnemyAI>().isChasing)
+            {
+                beingChased = true;
+            }
+        }
+
+
+
+        if(beingChased)
+        {
+            GameObject camera = GameObject.FindGameObjectWithTag("ChaseMusic");
+            camera.GetComponent<AudioSource>().volume = 0.17f;
+        } else
+        {
+            GameObject camera = GameObject.FindGameObjectWithTag("ChaseMusic");
+            camera.GetComponent<AudioSource>().volume = 0f;
         }
     }
 
@@ -140,5 +178,10 @@ public class PlayerCameraController : MonoBehaviour
         lilypad.inventoryItem.GetComponent<Renderer>().enabled = true;
         highlightableItems.Remove(lilypad.gameObject);
         Destroy(lilypad.gameObject);
+    }
+
+    public void ChaseMusicEnabled(bool enabled)
+    {
+        this.beingChased = enabled;
     }
 }

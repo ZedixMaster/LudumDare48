@@ -17,9 +17,10 @@ public class EnemyAI : MonoBehaviour
     private int currentSpot;
     private float waitTime;
     private Animator anim;
-    private bool isChasing;
+    public bool isChasing;
     private RaycastHit hit;
     private bool isActive;
+    private AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
@@ -71,6 +72,7 @@ public class EnemyAI : MonoBehaviour
             }
         } else if(isChasing && !player.GetComponent<PlayerController>().isDead)
         {
+
             anim.SetBool("SeesPlayer", true);
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
 
