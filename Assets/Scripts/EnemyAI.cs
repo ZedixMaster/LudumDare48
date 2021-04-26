@@ -11,6 +11,7 @@ public class EnemyAI : MonoBehaviour
     public Transform[] moveSpots;
     public float startWaitTime;
     public float detectionDistance;
+    public AudioClip shockNoise;
 
     private int currentSpot;
     private float waitTime;
@@ -101,7 +102,7 @@ public class EnemyAI : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            Debug.Log("DIE");
+            AudioSource.PlayClipAtPoint(shockNoise, player.transform.position, 2.0f);
             player.GetComponent<PlayerController>().Die();
 
             anim.SetTrigger("PlayerDies");
