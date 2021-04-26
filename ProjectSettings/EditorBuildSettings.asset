@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Lake_Kelvin_old.unity
     guid: 5e1bae8d066bbdf4a98a7978ee004ac1
   - enabled: 1
-    path: Assets/Scenes/Lake_Kelvin.unity
+    path: Assets/Scenes/Lake.unity
     guid: 2a9b99f7ae62a5a4f848e462fee182d9
   m_configObjects: {}
