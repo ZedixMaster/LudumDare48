@@ -6,7 +6,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("Lake_Kelvin");
+        SceneManager.LoadScene("Lake_Kelvin_2");
     }
 
     public void QuitGame()

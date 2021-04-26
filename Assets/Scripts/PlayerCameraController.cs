@@ -13,6 +13,7 @@ public class PlayerCameraController : MonoBehaviour
     private GameObject activeItem;
 
     public GameObject player;
+    public GameObject credits;
 
     // Start is called before the first frame update
     void Start()
@@ -93,15 +94,19 @@ public class PlayerCameraController : MonoBehaviour
                     {
                         SetActiveItem(highlightedItem);
                     }
-
+                    if (highlightedItem.GetComponent<Dog>() != null)
+                    {
+                        Cursor.lockState = CursorLockMode.None;
+                        credits.SetActive(true);
+                    }
                 }
             }
         } else if(player.GetComponent<PlayerController>().isDead)
         {
-            GameObject faceLocation = GameObject.FindGameObjectWithTag("Enemy");
+            //GameObject faceLocation = GameObject.FindGameObjectWithTag("Enemy");
 
 
-            transform.LookAt(faceLocation.transform);
+            //transform.LookAt(faceLocation.transform);
         }
     }
 
