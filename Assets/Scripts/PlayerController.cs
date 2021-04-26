@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     private float cheatInputTimer = 5;
     private float currentCheatInputTime;
     private bool cheatCodeStarted = false;
+    public bool cheatsEnabled = false;
     
     void Start()
     {
@@ -81,7 +82,7 @@ public class PlayerController : MonoBehaviour
             currentCheatInputTime = cheatInputTimer;
             if(currentCheatIndex >= cheatCode.Count)
             {
-                enableCheats();
+                EnableCheats();
             }
         }
 
@@ -180,7 +181,7 @@ public class PlayerController : MonoBehaviour
         crosshair.SetActive(false);
         pauseMenu.SetActive(true);
         isPaused = true;
-        //Time.timeScale = 0.1f;
+        Time.timeScale = 0.1f;
         Cursor.lockState = CursorLockMode.None;
     }
 
@@ -199,8 +200,14 @@ public class PlayerController : MonoBehaviour
         SceneManager.LoadScene("MainMenuScene");
     }
 
-    private void enableCheats()
+    public void ExitGame()
     {
+        Application.Quit();
+    }
+
+    private void EnableCheats()
+    {
+        cheatsEnabled = true;
         cheatCodeStarted = false;
         currentCheatIndex = 0;
         currentCheatInputTime = 0;
@@ -208,7 +215,27 @@ public class PlayerController : MonoBehaviour
         speedMultiplier = 55f;
         turnSpeed = 15f;
         maxTurnSpeed = 3f;
-        GetComponent<Rigidbody>().drag = 0;
+        GetComponent<Rigidbody>().drag = .15f;
         Camera.main.fieldOfView = 70;
     }
+
+    public void GiveSpeedBoost()
+    {
+        if (!cheatsEnabled)
+        {
+            speedMultiplier = 45f;
+            turnSpeed = 12f;
+            maxTurnSpeed = 2.5f;
+            GetComponent<Rigidbody>().drag = .25f;
+            Camera.main.fieldOfView = 70;
+        } else
+        {
+            speedMultiplier = 65f;
+            turnSpeed = 15f;
+            maxTurnSpeed = 3f;
+            GetComponent<Rigidbody>().drag = 0f;
+            Camera.main.fieldOfView = 80;
+        }
+    }
+
 }
