@@ -12,25 +12,32 @@ public class EnemyAI : MonoBehaviour
     public float startWaitTime;
     public float detectionDistance;
     public AudioClip shockNoise;
+    public bool alwaysChasing;
 
     private int currentSpot;
     private float waitTime;
     private Animator anim;
     private bool isChasing;
     private RaycastHit hit;
+    private bool isActive;
 
     // Start is called before the first frame update
     void Start()
     {
         waitTime = startWaitTime;
-        currentSpot = Random.Range(0, moveSpots.Length);
+        currentSpot = 0;
         anim = gameObject.GetComponent<Animator>();
         isChasing = false;
+        isActive = false;
+        gameObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(!isActive) { return; }
+        if(alwaysChasing) { isChasing = true; }
+
         if (!isChasing && !player.GetComponent<PlayerController>().isDead)
         {
             anim.SetBool("SeesPlayer", false);
@@ -100,12 +107,17 @@ public class EnemyAI : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if(other.gameObject.tag == "Player" && isActive)
         {
             AudioSource.PlayClipAtPoint(shockNoise, player.transform.position, 2.0f);
             player.GetComponent<PlayerController>().Die();
 
             anim.SetTrigger("PlayerDies");
         }
+    }
+
+    public void SetIsActive(bool active)
+    {
+        this.isActive = active;
     }
 }

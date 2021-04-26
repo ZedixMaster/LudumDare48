@@ -96,7 +96,7 @@ public class PlayerCameraController : MonoBehaviour
 
                 }
             }
-        } else
+        } else if(player.GetComponent<PlayerController>().isDead)
         {
             GameObject faceLocation = GameObject.FindGameObjectWithTag("Enemy");
 
@@ -117,6 +117,17 @@ public class PlayerCameraController : MonoBehaviour
 
     private void AddItemToInventory(Lilypad lilypad)
     {
+        if(lilypad.inventoryItem.name == "key")
+        {
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("EnemyParents");
+
+            foreach(GameObject enemy in enemies)
+            {
+                enemy.GetComponentInChildren<Renderer>().enabled = true;
+                enemy.GetComponent<EnemyAI>().SetIsActive(true);
+            }
+        }
+
         lilypad.inventoryItem.GetComponent<Renderer>().enabled = true;
         highlightableItems.Remove(lilypad.gameObject);
         Destroy(lilypad.gameObject);
