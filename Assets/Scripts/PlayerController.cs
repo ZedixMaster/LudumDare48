@@ -28,9 +28,30 @@ public class PlayerController : MonoBehaviour
 
     private List<GameObject> inventory;
     public bool isPaused = false;
+
+    private List<KeyCode> cheatCode;
+    private List<KeyCode> cheatInputs;
+    private int currentCheatIndex;
+    private float cheatInputTimer = 5;
+    private float currentCheatInputTime;
+    private bool cheatCodeStarted = false;
     
     void Start()
     {
+        cheatCode = new List<KeyCode>()
+        {
+            KeyCode.UpArrow,
+            KeyCode.UpArrow,
+            KeyCode.DownArrow,
+            KeyCode.DownArrow,
+            KeyCode.LeftArrow,
+            KeyCode.RightArrow,
+            KeyCode.LeftArrow,
+            KeyCode.RightArrow,
+            KeyCode.B,
+            KeyCode.A,
+            KeyCode.Return
+        };
         pauseMenu.SetActive(false);
         settingsMenu.SetActive(false);
         crosshair.SetActive(true);
@@ -51,6 +72,33 @@ public class PlayerController : MonoBehaviour
             {
                 ResumeGame();
             }
+        }
+
+
+        if(cheatCodeStarted && Input.GetKeyDown(cheatCode[currentCheatIndex]))
+        {
+            currentCheatIndex++;
+            currentCheatInputTime = cheatInputTimer;
+            if(currentCheatIndex >= cheatCode.Count)
+            {
+                enableCheats();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) && !cheatCodeStarted)
+        {
+            cheatCodeStarted = true;
+            currentCheatInputTime = cheatInputTimer;
+            currentCheatIndex++;
+        }
+
+        if (currentCheatInputTime > 0)
+        {
+            currentCheatInputTime -= Time.deltaTime;
+        } else
+        {
+            cheatCodeStarted = false;
+            currentCheatIndex = 0;
         }
     }
 
@@ -149,5 +197,18 @@ public class PlayerController : MonoBehaviour
     public void BackToMenu()
     {
         SceneManager.LoadScene("MainMenuScene");
+    }
+
+    private void enableCheats()
+    {
+        cheatCodeStarted = false;
+        currentCheatIndex = 0;
+        currentCheatInputTime = 0;
+
+        speedMultiplier = 55f;
+        turnSpeed = 15f;
+        maxTurnSpeed = 3f;
+        GetComponent<Rigidbody>().drag = 0;
+        Camera.main.fieldOfView = 70;
     }
 }
