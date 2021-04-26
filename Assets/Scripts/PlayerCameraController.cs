@@ -57,7 +57,7 @@ public class PlayerCameraController : MonoBehaviour
 
 
             int layermask = 1 << 6;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 500, layermask))
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 15, layermask))
             {
                 GameObject hitObject = hit.collider.transform.gameObject;
                 if (hitObject.GetComponent<Highlight>() != null)
