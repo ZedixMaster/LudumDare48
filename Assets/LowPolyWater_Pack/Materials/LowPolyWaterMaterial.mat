@@ -157,7 +157,7 @@ Material:
     - _RandomSpeed: 0.5
     - _ReflDistort: 0.9267696
     - _RefrDistort: 1.4393286
-    - _Shininess: 14.27
+    - _Shininess: 1
     - _ShoreTiling: 56.862743
     - _SkyBoxReflection: 0.426
     - _SmoothnessTextureChannel: 0
@@ -191,7 +191,7 @@ Material:
     - _DistortParams: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Extinction: {r: 4.5, g: 75, b: 300, a: 1}
-    - _Foam: {r: 1.03, g: 2.68, b: 0, a: 0}
+    - _Foam: {r: 5.09, g: -0.2, b: 0.51, a: 0.48}
     - _FoamWaveParams: {r: 0, g: 0.24918434, b: 3.3395782, a: 1}
     - _Fresnel_ST: {r: 1, g: 1, b: 0, a: 0}
     - _GAmplitude: {r: 0, g: 0, b: 0, a: 0}
