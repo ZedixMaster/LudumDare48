@@ -15,9 +15,13 @@ public class PlayerCameraController : MonoBehaviour
     public GameObject player;
     public GameObject credits;
 
+    public SettingsMenu settings;
+
     // Start is called before the first frame update
     void Start()
     {
+        settings.LoadSettings();
+
         activeItem = null;
         var highlightables = FindObjectsOfType<Highlight>();
         highlightableItems = new List<GameObject>();
@@ -103,10 +107,10 @@ public class PlayerCameraController : MonoBehaviour
             }
         } else if(player.GetComponent<PlayerController>().isDead)
         {
-            //GameObject faceLocation = GameObject.FindGameObjectWithTag("Enemy");
+            GameObject faceLocation = GameObject.FindGameObjectWithTag("Enemy");
 
 
-            //transform.LookAt(faceLocation.transform);
+            transform.LookAt(faceLocation.transform);
         }
     }
 

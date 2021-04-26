@@ -17,7 +17,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject crosshair;
     [SerializeField] private GameObject settingsMenu;
+    [SerializeField] private GameObject hyperspeedMessage;
     [SerializeField] private GameObject[] inventoryObjects;
+    public AudioSource dogNoise;
 
     private Vector3 velocity;
     private Rigidbody rb;
@@ -50,8 +52,7 @@ public class PlayerController : MonoBehaviour
             KeyCode.LeftArrow,
             KeyCode.RightArrow,
             KeyCode.B,
-            KeyCode.A,
-            KeyCode.Return
+            KeyCode.A
         };
         pauseMenu.SetActive(false);
         settingsMenu.SetActive(false);
@@ -181,7 +182,7 @@ public class PlayerController : MonoBehaviour
         crosshair.SetActive(false);
         pauseMenu.SetActive(true);
         isPaused = true;
-        Time.timeScale = 0.1f;
+        Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
     }
 
@@ -217,6 +218,7 @@ public class PlayerController : MonoBehaviour
         maxTurnSpeed = 3f;
         GetComponent<Rigidbody>().drag = .15f;
         Camera.main.fieldOfView = 70;
+        hyperspeedMessage.SetActive(true);
     }
 
     public void GiveSpeedBoost()
